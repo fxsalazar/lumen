@@ -387,9 +387,7 @@ function ImdbPoster({ imdbId, url }: { imdbId: string; url: string }) {
   )
 }
 
-function BookCover({ isbn, orientation = "portrait" }: { isbn: string; orientation?: string }) {
-  // check if orientaion is empty or not portrait or landscape, default to portrait
-  const validOrientation = orientation === "landscape" ? "landscape" : "portrait"
+function BookCover({ isbn }: { isbn: string }) {
   return (
     <a
       className="book-cover inline-block focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-border-focus"
@@ -400,12 +398,7 @@ function BookCover({ isbn, orientation = "portrait" }: { isbn: string; orientati
       <img
         src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
         alt="Book cover"
-        className={clsx(
-          { "aspect-2/3": validOrientation === "portrait" },
-          { "aspect-3/2": validOrientation === "landscape" },
-          "h-[120px]",
-          "bg-bg-tertiary",
-        )}
+        className="h-[120px] object-cover bg-bg-tertiary"
       />
     </a>
   )
