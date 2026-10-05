@@ -68,6 +68,7 @@ import { TagLink } from "./tag-link"
 import { Tooltip } from "./tooltip"
 import { WebsiteFavicon } from "./website-favicon"
 import { getImdbId } from "../utils/imdb"
+import { clsx } from "clsx"
 
 export type MarkdownProps = {
   children: string
@@ -223,7 +224,10 @@ export const Markdown = React.memo(
               {frontmatter?.isbn && online ? (
                 // If the note has an ISBN, show the book cover
                 <div className="mb-5 inline-flex">
-                  <BookCover isbn={`${frontmatter.isbn}`} />
+                  <BookCover
+                    orientation={`${frontmatter?.orientation}`}
+                    isbn={`${frontmatter.isbn}`}
+                  />
                 </div>
               ) : null}
               {hasImdbPoster && url ? (
@@ -383,7 +387,9 @@ function ImdbPoster({ imdbId, url }: { imdbId: string; url: string }) {
   )
 }
 
-function BookCover({ isbn }: { isbn: string }) {
+function BookCover({ isbn, orientation = "portrait" }: { isbn: string; orientation?: string }) {
+  // check if orientaion is empty or not portrait or landscape, default to portrait
+  const validOrientation = orientation === "landscape" ? "landscape" : "portrait"
   return (
     <a
       className="book-cover inline-block focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-border-focus"
@@ -394,7 +400,12 @@ function BookCover({ isbn }: { isbn: string }) {
       <img
         src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
         alt="Book cover"
-        className="aspect-[2/3] h-[120px] bg-bg-tertiary"
+        className={clsx(
+          { "aspect-2/3": validOrientation === "portrait" },
+          { "aspect-3/2": validOrientation === "landscape" },
+          "h-[120px]",
+          "bg-bg-tertiary",
+        )}
       />
     </a>
   )
