@@ -68,7 +68,6 @@ import { TagLink } from "./tag-link"
 import { Tooltip } from "./tooltip"
 import { WebsiteFavicon } from "./website-favicon"
 import { getImdbId } from "../utils/imdb"
-import { clsx } from "clsx"
 
 export type MarkdownProps = {
   children: string
@@ -224,10 +223,7 @@ export const Markdown = React.memo(
               {frontmatter?.isbn && online ? (
                 // If the note has an ISBN, show the book cover
                 <div className="mb-5 inline-flex">
-                  <BookCover
-                    orientation={`${frontmatter?.orientation}`}
-                    isbn={`${frontmatter.isbn}`}
-                  />
+                  <BookCover isbn={`${frontmatter.isbn}`} />
                 </div>
               ) : null}
               {hasImdbPoster && url ? (
@@ -398,7 +394,7 @@ function BookCover({ isbn }: { isbn: string }) {
       <img
         src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
         alt="Book cover"
-        className="h-[120px] object-cover bg-bg-tertiary"
+        className="object-cover h-[120px] bg-bg-tertiary"
       />
     </a>
   )
